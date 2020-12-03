@@ -17,15 +17,22 @@ module.exports = class extends Command {
 	}
 	async run(message, target) {
 		const name = checkUsername(message);
-		const member = message.mentions.members.last() || message.guild.members.cache.get(target) || message.member;
+		const member = message.mentions.members.first() || message.guild.members.cache.get(target.shift()) || message.member;
 		return message.channel.send(new MessageEmbed()
-			.setColor(message.member.displayHexColor || 'RANDOM')
+			.setColor(message.member.displayColor || 'RANDOM')
+			.setTitle(`${member.user.username.toUpperCase()} AVATAR`)
+			.setURL(member.user.displayAvatarURL({
+				format: 'png',
+				dynamic: true,
+				size: 2048
+			}))
 			.setTimestamp()
 			.setFooter(`REQUESTED BY ${name.toUpperCase()}`, message.author.displayAvatarURL({
 				dynamic: true,
 				size: 2048
 			}))
 			.setImage(`${member.user.displayAvatarURL({
+				format: 'png',
 				dynamic: true,
 				size: 2048
 			})}`));

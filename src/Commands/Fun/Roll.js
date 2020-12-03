@@ -32,7 +32,7 @@ module.exports = class extends Command {
 		const name = checkUsername(msg);
 		let total = 0;
 		const embed = new MessageEmbed()
-			.setColor(msg.member.displayHexColor || 'RANDOM')
+			.setColor(msg.member.displayColor || 'RANDOM')
 			.setTimestamp()
 			.setFooter(`REQUESTED BY ${name.toUpperCase()}`, msg.author.displayAvatarURL({
 				dynamic: true,
@@ -50,12 +50,12 @@ module.exports = class extends Command {
 				result = result.toString();
 
 				if (result.length > 500) {
-					embed.setDescription(`${name} rolled a **(${dice})**: 
+					embed.setDescription(`${this.client.emojis.cache.get('780492029008281662')} ${name} rolled a **(${dice})** ${this.client.emojis.cache.get('780492029008281662')}: 
 					
 					(Character Limit Reached, showing only total):
 				**${roll.total}**`);
 				} else {
-					embed.setDescription(`${name} rolled a **(${dice})**: 
+					embed.setDescription(`${this.client.emojis.cache.get('780492029008281662')} ${name} rolled a **(${dice}) ${this.client.emojis.cache.get('780492029008281662')}**: 
 				
 				\`${result}\``);
 				}
@@ -68,7 +68,7 @@ module.exports = class extends Command {
 				result.shift();
 				result = result.toString();
 
-				embed.setDescription(`**${name} rolled:** `);
+				embed.setDescription(`**${this.client.emojis.cache.get('780492029008281662')} ${name} rolled ${this.client.emojis.cache.get('780492029008281662')}:** `);
 				if (result.length > 500) {
 					embed.addField(`${element} (Character Limit Reached, showing only total):`, roll.total);
 				} else {

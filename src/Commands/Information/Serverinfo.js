@@ -54,7 +54,7 @@ module.exports = class extends Command {
 
 		const embed = new MessageEmbed()
 			.setDescription(`**Guild Information for __${message.guild.name}__**`)
-			.setColor(message.member.displayHexColor || 'RANDOM')
+			.setColor(message.member.displayColor || 'RANDOM')
 			.setThumbnail(message.guild.iconURL({
 				dynamic: true,
 				size: 2048

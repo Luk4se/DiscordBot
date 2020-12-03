@@ -22,8 +22,9 @@ module.exports = class Command {
 		this.ownerOnly = options.ownerOnly || false;
 		this.nsfw = options.nsfw || false;
 		this.args = options.args || false;
-		this.fulldescription = options.fulldescription || false;
 		this.ratelimit = Util.mergeDefault(DEFAULT_RATELIMIT, options.ratelimit || DEFAULT_RATELIMIT);
+		this.disable = options.disable || 'Not Allowed';
+		this.patreon = options.patreon || 'Everyone';
 	}
 
 	// eslint-disable-next-line no-unused-vars

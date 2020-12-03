@@ -5,6 +5,7 @@ const {
 	status,
 	checkMutes
 } = require('../Structures/Functions');
+const DisableCommands = require('../Schemas/disable-schema');
 
 module.exports = class extends Event {
 
@@ -23,12 +24,26 @@ module.exports = class extends Event {
 		// eslint-disable-next-line no-unused-vars
 		await mongo().then(mongoose => {
 			console.log(`Connected to Mongo Database`);
-		}
-		);
+		});
 		checkMutes(this.client);
+		// eslint-disable-next-line consistent-return
+		this.client.guilds.cache.forEach(async (guild) => {
+			const disableCommands = await DisableCommands.findOne({
+				guildId: guild.id
+			});
+
+			if (!disableCommands) {
+				// eslint-disable-next-line no-unused-vars
+				const dbc = await DisableCommands.create({
+					guildId: guild.id
+				});
+			} else {
+				return undefined;
+			}
+		});
 		setInterval(() => {
 			const types = type();
-			this.client.user.setActivity(`${status(types)} | ${this.client.prefix}help `, {
+			this.client.user.setActivity(`${status(types)} | mention me!`, {
 				type: types
 			});
 		}, 3600000);

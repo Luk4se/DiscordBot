@@ -1,13 +1,14 @@
 const Command = require('../../Structures/Command');
 const {
-	getMember
+	getMember,
+	embedImg
 } = require('../../Structures/Functions');
 
 module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			description: 'Boops an user',
+			description: 'Pokes user(s)',
 			category: 'Social',
 			args: true,
 			usage: '<user>',
@@ -15,12 +16,16 @@ module.exports = class extends Command {
 				bucket: 1,
 				reset: 10 * 1000,
 				stack: true
-			}
+			},
+			disable: 'false'
 		});
 	}
 	async run(msg, user) {
 		const author = msg.member;
-		const target = getMember(msg, user);
+		const target = msg.mentions.members.first() || await getMember(msg, user.shift());
+		if (!target) {
+			return 0;
+		}
 		const poke = [
 			'https://i.imgur.com/D5C5fmW.gif',
 			'https://i.imgur.com/JbJwxCq.gif',
@@ -28,16 +33,26 @@ module.exports = class extends Command {
 			'https://i.imgur.com/ikeIpJ2.gif',
 			'https://i.imgur.com/nk2BtDe.gif',
 			'https://i.imgur.com/suXtd0Q.gif',
-			'https://i.imgur.com/DbJbhvZ.gif'
+			'https://i.imgur.com/DbJbhvZ.gif',
+			'https://i.imgur.com/bDFOTXM.gif',
+			'https://i.imgur.com/jwXVjeU.gif',
+			'https://i.imgur.com/h1tnsS3.gif',
+			'https://i.imgur.com/51r6tfS.gif',
+			'https://i.imgur.com/xpQWM9d.gif',
+			'https://i.imgur.com/VV1rDua.gif',
+			'https://i.imgur.com/nR88Lgj.gif'
 		];
+		user.shift();
+		let message;
 
-		// let result = Math.floor((Math.random() * patting.length));
+		if (user.length > 0) {
+			message = user.join(' ');
+		}
 		if (target === author) {
 			return msg.channel.send('Hey! You can\'t poke yourself!');
 		}
-		return msg.channel.send(`**${author.nickname || author.user.username}** pokes **${target.nickname || target.user.username}**`, {
-			files: [poke[Math.floor(Math.random() * poke.length)]]
-		});
+		return embedImg(msg, author.nickname || author.user.username, 'pokes',
+			target.nickname || target.user.username, poke[Math.floor(Math.random() * poke.length)], msg.member.displayColor || 'RANDOM', message);
 	}
 
 };

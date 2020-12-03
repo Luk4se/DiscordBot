@@ -15,10 +15,10 @@ module.exports = class extends Command {
 			description: 'Displays all the commands in the bot',
 			category: 'Utilities',
 			usage: '[command]',
+			guildOnly: true,
 			ratelimit: {
 				bucket: 1,
-				reset: 7 * 1000,
-				guildOnly: true
+				reset: 7 * 1000
 			}
 		});
 	}
@@ -27,7 +27,7 @@ module.exports = class extends Command {
 		const name = checkUsername(message);
 		const embed = new MessageEmbed()
 			.setColor('RANDOM')
-			.setAuthor(`${message.guild.members.cache.get('652867497787392000').nickname || this.client.user.username} — Help Menu`, message.guild.iconURL({
+			.setAuthor(`${message.guild.members.cache.get('725519211929272402').nickname || this.client.user.username} — Help Menu`, message.guild.iconURL({
 				dynamic: true,
 				size: 2048,
 				format: 'png'

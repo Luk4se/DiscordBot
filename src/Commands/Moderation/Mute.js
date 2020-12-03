@@ -3,7 +3,7 @@
 const Command = require('../../Structures/Command');
 const muteSchema = require('../../Schemas/mute-schema');
 const {
-	errorReplies, errorReply
+	errorReplies, errorReply, getMember
 } = require('../../Structures/Functions');
 const {
 	timeUnit,
@@ -26,7 +26,7 @@ module.exports = class extends Command {
 
 	async run(msg, mutee) {
 		const staff = msg.author;
-		const target = msg.mentions.members.last() || msg.guild.members.cache.get(mutee);
+		const target = msg.mentions.members.first() || await getMember(msg, mutee.shift());
 		if (!target) {
 			return msg.channel.send(`${errorReplies()} Please specify someone to mute.`).then(msg => msg.delete({ timeout: 5000 }));
 		}

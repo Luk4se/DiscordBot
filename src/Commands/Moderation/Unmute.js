@@ -26,7 +26,7 @@ module.exports = class extends Command {
 			return msg.channel.send(`${errorReply()}. Please check the command following the example, ${this.client.prefix}unmute \`@<user>\` or  \`${this.client.prefix}unmute <ID>\`.`)
 				.then(msg => msg.delete({ timeout: 5000 }));
 		}
-		const member = getMember(msg, target[0]);
+		const member = msg.mentions.members.first() || await getMember(msg, target.shift());
 		if (!member) {
 			return msg.channel.send(`${errorReplies()}. Please specify someone to check if they're muted.`).then(msg => msg.delete({ timeout: 5000 }));
 		}

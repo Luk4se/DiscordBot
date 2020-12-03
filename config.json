@@ -3,5 +3,5 @@
     "prefix": "!",
     "owners": ["502462411106811914"],
     "defaultPerms": ["SEND_MESSAGES", "VIEW_CHANNEL"],
-    "mongoPath": "mongodb+srv://lukase:rXjadBGqTqSKiqU@discord-bot.ircpy.mongodb.net/ninesdb?retryWrites=true&w=majority"
+    "mongoPath": ""
 }

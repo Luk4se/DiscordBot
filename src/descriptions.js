@@ -20,7 +20,7 @@ module.exports = {
 
                     Addition, Subtraction, Multiplication, and Division is also accepted
                     
-                    (Dice can also use advanced modifiers. If you want a list of them, type **${prefix}help dice-advanced**(It will be long, be warned))
+                    Dice can also use advanced modifiers. If you want a list of them, type **${prefix}help dice-advanced** *It will be long, be warned.*
                     `;
 	},
 

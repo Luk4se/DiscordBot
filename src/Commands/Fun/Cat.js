@@ -31,7 +31,7 @@ module.exports = class extends Command {
 			.then(body => body.data);
 		const selected = data[Math.floor(Math.random() * data.length)];
 		return message.channel.send(new MessageEmbed()
-			.setColor(message.member.displayHexColor || 'RANDOM')
+			.setColor(message.member.displayColor || 'RANDOM')
 			.setAuthor('CATS!', message.guild.iconURL)
 			.setTimestamp()
 			.setFooter(`REQUESTED BY ${name.toUpperCase()}`, message.author.displayAvatarURL({

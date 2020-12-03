@@ -20,7 +20,7 @@ module.exports = class extends Command {
 		const name = checkUsername(message);
 		const result = ['HEADS', 'TAILS'];
 		const cEmbed = new MessageEmbed()
-			.setColor(message.member.displayHexColor || 'RANDOM')
+			.setColor(message.member.displayColor || 'RANDOM')
 			.setAuthor('COIN TOSSED!', message.guild.iconURL())
 			.setDescription(`The result was: ${result[Math.floor(Math.random() * result.length)]}`)
 			.setTimestamp()

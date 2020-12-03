@@ -37,7 +37,7 @@ module.exports = class extends Command {
 
 	async run(message, [target]) {
 		const name = checkUsername(message);
-		const member = message.mentions.members.last() || message.guild.members.cache.get(target) || message.member;
+		const member = message.mentions.members.first() || message.guild.members.cache.get(target) || message.member;
 		let boost;
 
 		if (member.premiumSinceTimestamp) {
@@ -54,7 +54,7 @@ module.exports = class extends Command {
 				dynamic: true,
 				size: 2048
 			}))
-			.setColor(member.displayHexColor || 'RANDOM')
+			.setColor(member.displayColor || 'RANDOM')
 			.setFooter(`REQUESTED BY ${name.toUpperCase()}`, message.author.displayAvatarURL({
 				dynamic: true,
 				size: 2048

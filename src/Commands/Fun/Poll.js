@@ -19,8 +19,8 @@ module.exports = class extends Command {
 
 	async run(msg, poll) {
 		const name = checkUsername(msg);
-		const pollDescription = poll.join(' ').split(/[?,!.,:]+/).shift();
-		const choices = poll.join(' ').split(/[?,!.]+/);
+		const pollDescription = poll.join(' ').split(',').shift();
+		const choices = poll.join(' ').split(',');
 		choices.shift();
 
 		if (choices.length > 10) {
@@ -54,8 +54,7 @@ module.exports = class extends Command {
 			}))
 			.setTimestamp();
 
-		const embedmsg = await	msg.channel.send(embed);
-
+		const embedmsg = await msg.channel.send(embed);
 		// eslint-disable-next-line no-shadow
 		for (let i = 0; i < choices.length; i++) {
 			emojis = [

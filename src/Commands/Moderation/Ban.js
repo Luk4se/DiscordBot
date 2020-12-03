@@ -17,15 +17,15 @@ module.exports = class extends Command {
 			description: 'Ban User',
 			category: 'Moderation',
 			args: true,
-			guildOnly: true,
 			userPerms: ['BAN_MEMBERS'],
 			botPerms: ['BAN_MEMBERS'],
 			usage: '<user> [reason]'
 		});
 	}
 
+	// eslint-disable-next-line consistent-return
 	async run(msg, ban) {
-		const target = getMember(msg, ban);
+		const target = msg.mentions.members.first() || await getMember(msg, ban.shift());
 		ban.shift();
 		if (target.hasPermission('BAN_MEMBERS')) {
 			return msg.channel.send(`${errorReply()} You can't ban a mod!`).then(msg => msg.delete({
@@ -57,7 +57,6 @@ module.exports = class extends Command {
 					.then(msgreply => msgreply.delete({ timeout: 5000 }));
 			}
 		});
-		return 0;
 	}
 
 };

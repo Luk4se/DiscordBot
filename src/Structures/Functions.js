@@ -2,6 +2,7 @@
 const Discord = require('discord.js');
 // eslint-disable-next-line no-unused-vars
 const ms = require('ms');
+// eslint-disable-next-line no-unused-vars
 const Long = require('long');
 const muteSchema = require('../Schemas/mute-schema');
 const {
@@ -10,13 +11,38 @@ const {
 
 module.exports = {
 
-	getMember: function getMember(msg, toFind) {
-		const target = msg.mentions.members.last() || msg.guild.members.cache.get(toFind);
-		return target;
+	getMember: async function getMember(msg, toFind) {
+		let fetchmember;
+		await msg.guild.members.fetch({
+			user: toFind,
+			force: true
+		}).then(async member => {
+			fetchmember = member;
+		});
+		if (!fetchmember) {
+			return msg.reply('No user has been found, please check if you mentioned someone correctly, or used their correct ID.');
+		}
+		return fetchmember;
+	},
+
+	promptNormalMessage: async function promptNormalMessage(message, author, time, validReactions) {
+		time *= 1000;
+
+		for (const reaction of validReactions) await message.react(reaction);
+
+		const filter = (reaction, user) => validReactions.includes(reaction.emoji.name) && user.id === author.id;
+
+		return message
+			.awaitReactions(filter, {
+				max: 1,
+				time: time
+			})
+			.then(collected => collected.first() && collected.first().emoji.name);
 	},
 
 	promptMessage: async function promptMessage(message, author, time, validReactions) {
 		time *= 1000;
+
 
 		for (const reaction of validReactions) await message.react(reaction);
 
@@ -81,22 +107,25 @@ module.exports = {
 		}
 	},
 
+	checkNaN: function checkNaN(str) {
+		return Number.isNaN(str);
+	},
+
 	getDefaultChannel: function getDefaultChannel(guild) {
 		let generalChannel;
-		const textChannel = guild.channels.cache.find(channel => channel.name === 'general');
+		const textChannel = guild.channels.cache.find(channel => channel.name === 'general' && channel.type === 'text');
 		if (guild.channels.cache.has(guild.id)) {
 			generalChannel = guild.channels.cache.get(guild.id);
 		}
 		if (textChannel) {
-			generalChannel = guild.channels.cache.find(channel => channel.name === 'general');
+			return textChannel;
 		} else {
-			return guild.channels
+			generalChannel = guild.channels.cache
 				.filter(channel => channel.type === 'text' &&
 					channel.permissionsFor(guild.client.user).has('SEND_MESSAGES'))
-				.sort((a, b) => a.position - b.position ||
-					Long.fromString(a.id).sub(Long.fromString(b.id)).toNumber())
-				.first();
+				.find(channel => channel.rawPosition === 0);
 		}
+		console.log(generalChannel);
 		return generalChannel;
 	},
 
@@ -214,6 +243,16 @@ module.exports = {
 		if (messagesDeleted !== aux) {
 			return msg.author.send(`Sorry, but there were ${aux - (messagesDeleted - 2)} out of ${aux - 1} messages are over 14 days old, and I couldn't delete them.`);
 		}
-	}
+	},
 
+	embedImg: async function embedImg(msg, author, title, user, img, color, message) {
+		// eslint-disable-next-line new-cap
+		const embed = new Discord.MessageEmbed()
+			.setTitle(`${author} ${title} ${user}`)
+			.setDescription(`${message || ''}`)
+			.setURL(img)
+			.setColor(color)
+			.setImage(img);
+		return msg.channel.send(embed);
+	}
 };

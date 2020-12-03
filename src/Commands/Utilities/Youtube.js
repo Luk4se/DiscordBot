@@ -16,6 +16,10 @@ module.exports = class extends Command {
 		const youTube = new YouTube();
 
 		youTube.setKey('');
+		youTube.addParam('regionCode', 'US');
+		youTube.addParam('relevanceLanguage', 'en');
+		youTube.addParam('order', 'viewCount');
+
 
 		youTube.search(question.join(' '), 2, (error, result) => {
 			if (error) {

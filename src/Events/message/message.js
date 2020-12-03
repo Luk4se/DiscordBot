@@ -5,7 +5,7 @@
 
 const Event = require('../../Structures/Event');
 const ms = require('ms');
-
+const DisabledCommands = require('../../Schemas/disable-schema');
 module.exports = class extends Event {
 
 	constructor(...args) {
@@ -16,18 +16,32 @@ module.exports = class extends Event {
 
 	async run(message) {
 		const mentionRegex = RegExp(`^<@!?${this.client.user.id}>$`);
-		const mentionRegexPrefix = RegExp(`^<@!?${this.client.user.id}> `);
-
+		const prefix = await this.client.utils.loadPrefixes(message);
+		// eslint-disable-next-line func-names
+		exports.getPrefix = function getPrefix() {
+			return prefix;
+		};
+		this.client.prefix = prefix;
 		if (message.author.bot) return;
 
-		if (message.content.match(mentionRegex)) message.channel.send(`My prefix for ${message.guild.name} is \`${this.client.prefix}\`.`);
+		if (message.content.match(mentionRegex)) message.channel.send(`My prefix for ${message.guild.name} is \`${prefix}\`.`);
 
-		const prefix = message.content.match(mentionRegexPrefix) ?
-			message.content.match(mentionRegexPrefix)[0] : this.client.prefix;
 		if (!message.content.startsWith(prefix)) return;
 
 		const [cmd, ...args] = message.content.slice(prefix.length).trim().split(/ +/g);
 		const command = this.client.commands.get(cmd.toLowerCase()) || this.client.commands.get(this.client.aliases.get(cmd.toLowerCase()));
+		const disableCommands = await DisabledCommands.findOne({
+			guildId: message.guild.id
+		});
+
+		if (disableCommands) {
+			const commandDB = await disableCommands.get('commands');
+			const check = await commandDB.find(coms => coms === command.name);
+
+			if (check) {
+				return message.reply('This command has been disabled');
+			}
+		}
 
 		if (!this.client.owners.includes(message.author.id)) {
 			let remaining = await this._runLimits(message, command);
@@ -40,7 +54,20 @@ module.exports = class extends Event {
 			}
 		}
 
+
 		if (command) {
+			if (command.patreon !== 'Everyone' && !this.client.utils.checkOwner(message.author.id)) {
+				if (command.patreon === 'Premium' && !this.client.utils.checkPremium(message.author)) {
+					return message.reply(`Sorry, this command is only available for the Premium tier of my Patreon use ${this.client.prefix}patreon to see how to support me.`);
+				} else if (command.patreon === 'Supporter' && !this.client.utils.checkSupporter(message.author)) {
+					return message.reply(`Sorry, this command is only available for the Supporter or higher tier of my Patreon use ${this.client.prefix}patreon to see how to support me.`);
+				} else if (command.patreon === 'Donator' && !this.client.utils.checkBacker(message.author)) {
+					return message.reply(`Sorry, this command is only available for the Backer or higher tier of my Patreon use ${this.client.prefix}patreon to see how to support me.`);
+				}
+				if (command.disable === 'true') {
+					return message.reply('The command has been disabled.');
+				}
+			}
 			if (command.ownerOnly && !this.client.utils.checkOwner(message.author.id)) {
 				return message.reply('Sorry, this command can only be used by the bot owners.');
 			}

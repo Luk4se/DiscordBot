@@ -26,7 +26,7 @@ module.exports = class extends Command {
 
 	// eslint-disable-next-line consistent-return
 	async run(msg, kick) {
-		const target = getMember(msg, kick[0]);
+		const target = msg.mentions.members.first() || await getMember(msg, kick.shift());
 		kick.shift();
 		if (target.hasPermission('KICK_MEMBERS')) {
 			return msg.channel.send(`${errorReply()} You can't kick a mod!`).then(msg => msg.delete({

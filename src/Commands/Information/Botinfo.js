@@ -34,7 +34,7 @@ module.exports = class extends Command {
 			.setThumbnail(this.client.user.displayAvatarURL())
 			// eslint-disable-next-line max-len
 			.setDescription(`Hello, my name is 9S, but my friends call me Nines. I mean, if you want to call me Nines, it's totally okay, I am the primary bot for the ${message.guild.name} server on Discord.`)
-			.setColor(message.member.displayHexColor || 'RANDOM')
+			.setColor(message.member.displayColor || 'RANDOM')
 			.setFooter(`REQUESTED BY ${name.toUpperCase()}`, message.author.displayAvatarURL({
 				dynamic: true,
 				size: 2048
