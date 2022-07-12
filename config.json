@@ -1,0 +1,7 @@
+{
+    "token": "",
+    "prefix": "!",
+    "owners": [""],
+    "defaultPerms": ["SEND_MESSAGES", "VIEW_CHANNEL"],
+    "mongoPath": ""
+}
