@@ -8,6 +8,7 @@ const {
 } = require('../../Structures/Functions');
 const convert = require('convert-units');
 
+const exclude = ['Hz', 'mHz', 'MHz', 'b', 'Kb', 'Mb', 'Gb', 'Tb', 'B', 'KB', 'MB', 'GB', 'TB', 'mW', 'MW', 'mVA', 'MVA', 'mVAR', 'MVAR', 'mWh', 'MWh', 'mVARh', 'MVARh'];
 
 module.exports = class extends Command {
 
@@ -29,8 +30,14 @@ module.exports = class extends Command {
 
 		const name = checkUsername(msg);
 		const value = parseInt(query.shift());
-		const unitOG = query[0];
-		const unitConverted = query[1];
+		let unitOG = query[0];
+		let unitConverted = query[1];
+
+		if (exclude.indexOf(unitOG) <= 0 || exclude.indexOf(unitOG) <= 0) {
+			unitOG = unitOG.toLowerCase();
+			unitConverted = unitConverted.toLowerCase();
+		}
+
 		let converted;
 		const embed = new MessageEmbed()
 			.setColor('Random')
@@ -41,7 +48,6 @@ module.exports = class extends Command {
 				dynamic: true,
 				size: 2048
 			}));
-
 
 		if (!checkNaN(value)) {
 			try {

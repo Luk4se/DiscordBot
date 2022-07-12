@@ -52,7 +52,7 @@ module.exports = class extends Command {
 			return msg.channel.send('Hey! You can\'t poke yourself!');
 		}
 		return embedImg(msg, author.nickname || author.user.username, 'pokes',
-			target.nickname || target.user.username, poke[Math.floor(Math.random() * poke.length)], msg.member.displayColor || 'RANDOM', message);
+			poke[Math.floor(Math.random() * poke.length)], msg.member.displayColor || 'RANDOM', message, target.nickname || target.user.username);
 	}
 
 };

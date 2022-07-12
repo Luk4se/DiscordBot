@@ -81,7 +81,7 @@ module.exports = class extends Command {
 		}
 
 		return embedImg(msg, author.nickname || author.user.username, 'hugs',
-			target.nickname || target.user.username, hug[Math.floor(Math.random() * hug.length)], msg.member.displayColor || 'RANDOM', message);
+			hug[Math.floor(Math.random() * hug.length)], msg.member.displayColor || 'RANDOM', message, target.nickname || target.user.username);
 	}
 
 

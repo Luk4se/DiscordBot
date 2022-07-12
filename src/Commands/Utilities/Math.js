@@ -27,7 +27,8 @@ module.exports = class extends Command {
 		if (calculation.toString().includes(':')) {
 			return msg.channel.send(`\`:(range)\` is currently not accepted, due to hardware limitations, please remove that part and try again.`);
 		}
-		let result
+
+		let result;
 
 		try {
 			result = math.evaluate(calculation);

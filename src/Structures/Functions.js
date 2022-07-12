@@ -245,13 +245,23 @@ module.exports = {
 		}
 	},
 
-	embedImg: async function embedImg(msg, author, title, user, img, color, message) {
+	embedImg: async function embedImg(msg, author, title, img, color, message, user) {
 		// eslint-disable-next-line new-cap
 		const embed = new Discord.MessageEmbed()
 			.setTitle(`${author} ${title} ${user}`)
 			.setDescription(`${message || ''}`)
 			.setURL(img)
 			.setColor(color)
+			.setFooter('If image fails to load, you can click on the title.')
+			.setImage(img);
+		return msg.channel.send(embed);
+	},
+	memeEmbed: async function memeEmbed(msg, title, img, color, subreddit) {
+		const embed = new Discord.MessageEmbed()
+			.setTitle(`${title}`)
+			.setURL(subreddit)
+			.setColor(color)
+			.setFooter('If image fails to load, you can click on the title.')
 			.setImage(img);
 		return msg.channel.send(embed);
 	}

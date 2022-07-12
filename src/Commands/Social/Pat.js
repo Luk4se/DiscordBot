@@ -56,7 +56,7 @@ module.exports = class extends Command {
 		}
 
 		return embedImg(msg, author.nickname || author.user.username, 'pats',
-			target.nickname || target.user.username, pat[Math.floor(Math.random() * pat.length)], msg.member.displayColor || 'RANDOM', message);
+			pat[Math.floor(Math.random() * pat.length)], msg.member.displayColor || 'RANDOM', message, target.nickname || target.user.username);
 	}
 
 };

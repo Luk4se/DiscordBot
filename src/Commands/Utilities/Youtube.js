@@ -15,7 +15,7 @@ module.exports = class extends Command {
 	async run(msg, ...question) {
 		const youTube = new YouTube();
 
-		youTube.setKey('');
+		youTube.setKey('AIzaSyCyVXRMD7D9mJx7J5qSI29kW5HxZ4qL5f8');
 		youTube.addParam('regionCode', 'US');
 		youTube.addParam('relevanceLanguage', 'en');
 		youTube.addParam('order', 'viewCount');
